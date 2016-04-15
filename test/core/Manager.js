@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
-var mout = require('mout');
-var rimraf = require('rimraf');
+var rimraf = require('../../lib/util/rimraf');
 var Logger = require('bower-logger');
 var Manager = require('../../lib/core/Manager');
 var defaultConfig = require('../../lib/config');
@@ -23,7 +22,7 @@ describe('Manager', function () {
     beforeEach(function (next) {
         var logger = new Logger();
 
-        var config = mout.object.deepMixIn({}, defaultConfig, {
+        var config = defaultConfig({
             storage: {
                 packages: packagesCacheDir,
                 registry: registryCacheDir
@@ -37,7 +36,7 @@ describe('Manager', function () {
 
 
     describe('_areCompatible', function () {
-        describe('resolved is being fetched', function() {
+        describe('resolved is being fetched', function () {
 
             it('accepts endpoints with same targets', function () {
                 expect(manager._areCompatible(
@@ -233,7 +232,7 @@ describe('Manager', function () {
             ]);
         });
 
-        it('leaves different targets intact', function() {
+        it('leaves different targets intact', function () {
             var unique = manager._uniquify([
                 { source: 'facebook.com', target: 'a1b2c3' },
                 { source: 'facebook.com', target: 'ffffff' }
@@ -245,7 +244,7 @@ describe('Manager', function () {
             ]);
         });
 
-        it('removes if same targets', function() {
+        it('removes if same targets', function () {
             var unique = manager._uniquify([
                 { source: 'facebook.com', target: 'ffffff' },
                 { source: 'facebook.com', target: 'ffffff' }
@@ -256,7 +255,7 @@ describe('Manager', function () {
             ]);
         });
 
-        it('ignores other fields', function() {
+        it('ignores other fields', function () {
             var unique = manager._uniquify([
                 { source: 'facebook.com', foo: 12 },
                 { source: 'facebook.com', bar: 13 }
